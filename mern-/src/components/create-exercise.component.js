@@ -2,26 +2,28 @@ import React, {useState, useEffect } from 'react'
 import axios from 'axios'
 
  const CreateExercise = () => {
+     
      const [ exercise, setExercise] = useState({
         username: '',
         description: '',
         duration: 0,
         date: new Date(),
      })
+
      const [users, setUsers] = useState([])
     
      useEffect(() => {
          axios.get('http://localhost:5000/users')
             .then(res => {
-                setUsers([
+                setUsers(
                     res.data
-                ])
+                )
                 
             })
             .catch(err => {
                 console.log(err)
             })
-     }, [])
+     }, [users])
 
      const handleChange = (e) => {
          setExercise({
@@ -52,7 +54,7 @@ import axios from 'axios'
             <form onSubmit = {handleSubmit}>
               <div className="form-group">
                 <label>Username: </label> 
-                {/* <select className="form-control"
+                <select className="form-control"
                  type = 'text'
                  name = "username"
                  placeholder = "Username"
@@ -63,20 +65,13 @@ import axios from 'axios'
                      users.map(user => {
                          return <option
                          key = {user._id}
+                         value = {user.username}
                          >
                             {user.username}
-                            {user.createdAt}
                          </option>
                      })
                  }
-                </select> */}
-                 <input className="form-control"
-                 type = 'text'
-                 name = "username"
-                 placeholder = "Username"
-                 value = {exercise.username}
-                 onChange = {handleChange}
-                />
+                </select>
               </div>
             <div className="form-group"> 
             <label>Description: </label>
@@ -110,10 +105,9 @@ import axios from 'axios'
                         />
                 </div>  
             </div>  
-               
-            <div className="form-group">
-             <input type="submit" value="Create Exercise Log" className="btn btn-primary" />
-            </div>
+                <div className="form-group">
+                    <input type="submit" value="Create Exercise Log" className="btn btn-primary" />
+                </div>
             </form>
         </div>
     )
